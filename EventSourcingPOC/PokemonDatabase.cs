@@ -1,6 +1,6 @@
 ﻿namespace EventSourcingPOC
 {
-    public class PokemonDatabase
+    public class PokemonLocalDatabase: IPokemonDatabase
     {
         private readonly Dictionary<Guid, SortedList<DateTime, Event>> _pokemonEvents = new();
         public void Append(Event @event)
@@ -22,9 +22,9 @@
             }
             var pokemon = new Pokemon();
             var pokemonEvents = _pokemonEvents[pokemonId];
-            foreach (var @event in pokemonEvents.Values)
+            foreach (var pokemonEvent in pokemonEvents)
             {
-                pokemon.Apply(@event);
+                pokemon.Apply(pokemonEvent.Value);
             }
             return pokemon;
         }
